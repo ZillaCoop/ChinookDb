@@ -49,7 +49,7 @@ namespace ChinookDb.DataAccess
             return customers;
         }
 
-        public List<Customer> GetCustomerById(int CustomerId)
+        public List<Customer> ReadCustomerById(int CustomerId)
         {
             List<Customer> customers = new List<Customer>();
             string sql = "SELECT CustomerId, FirstName, LastName, PostalCode, Country, Phone, Email " +
@@ -58,6 +58,30 @@ namespace ChinookDb.DataAccess
             conn.Open();
             using SqlCommand cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@CustomerId", CustomerId);
+            var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                customers.Add(new Customer(
+                    reader.GetInt32(0),
+                    reader.GetString(1),
+                    reader.GetString(2),
+                    reader.IsDBNull(3) ? null : reader.GetString(3),
+                    reader.IsDBNull(4) ? null : reader.GetString(4),
+                    reader.IsDBNull(5) ? null : reader.GetString(5),
+                    reader.GetString(6)));
+            }
+            return customers;
+        }
+
+        public List<Customer> ReadCustomersByName(string name)
+        {
+            List<Customer> customers = new List<Customer>();
+            string sql = "SELECT CustomerId, FirstName, LastName, PostalCode, Country, Phone, Email " +
+                "FROM Customer WHERE FirstName LIKE @Name OR LastName LIKE @Name";
+            using SqlConnection conn = new SqlConnection(GetConnectionString());
+            conn.Open();
+            using SqlCommand cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@Name", "%" + name + "%");
             var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
