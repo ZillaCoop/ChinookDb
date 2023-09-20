@@ -142,6 +142,21 @@ namespace ChinookDb.DataAccess
 
         }
 
+        public bool UpdateAnExistingCustomersLastName(int customerId, string oldLastName, string newLastName)
+        {
+            string sql = "UPDATE Customer SET LastName = @NewLastName WHERE CustomerId = @CustomerId AND LastName = @OldLastName";
+            using SqlConnection conn = new SqlConnection(GetConnectionString());
+            conn.Open();
+            using SqlCommand cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@CustomerId", customerId);
+            cmd.Parameters.AddWithValue("@NewLastName", newLastName);
+            cmd.Parameters.AddWithValue("@OldLastName", oldLastName);
+
+            int result = cmd.ExecuteNonQuery();
+
+            return result > 0;
+        }
+
 
 
     }

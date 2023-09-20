@@ -13,9 +13,16 @@ namespace ChinookDb
             //chinookDAO.ReadCustomersByName("Jon").ForEach(c => Console.WriteLine(c));
             //chinookDAO.ReturnPageOfCustomersByOffsetAndLimit(5, 10).ForEach(c => Console.WriteLine(c));
 
-            Customer customer = new Customer(0, "John", "Travolta IV", "337-336", "Denmark", "98374839", "notjohn@travolta.com");
-            chinookDAO.AddNewCustomer(customer);
-            chinookDAO.ReadCustomersByName("Travolta").ForEach(c => Console.WriteLine(c));
+            
+            //Customer customer = new Customer(0, "John", "Travolta IV", "337-336", "Denmark", "98374839", "notjohn@travolta.com");
+            //chinookDAO.AddNewCustomer(customer);
+            //chinookDAO.ReadCustomersByName("Travolta").ForEach(c => Console.WriteLine(c));
+            
+
+            //chinookDAO.UpdateAnExistingCustomersLastName(60, "Travolta IV", "Travolta III");
+            //chinookDAO.ReadCustomersByName("Travolta").ForEach(c => Console.WriteLine(c));
+
+
         }
     }
 }
