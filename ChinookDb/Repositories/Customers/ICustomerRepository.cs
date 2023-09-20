@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChinookDb.Repositories.Customers
 {
-    internal interface ICustomerRepository : ICrudRepository<Customer, int>
+    internal interface ICustomerRepository : ICrudRepository<CustomerStruct, int>
     {
 
     }
