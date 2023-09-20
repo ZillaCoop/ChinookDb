@@ -7,7 +7,8 @@ namespace ChinookDb
         static void Main(string[] args)
         {
             ChinookDAO chinookDAO = new ChinookDAO();
-            chinookDAO.ReadAllCustomers().ForEach(c => Console.WriteLine(c));
+            //chinookDAO.ReadAllCustomers().ForEach(c => Console.WriteLine(c));
+            chinookDAO.GetCustomerById(1).ForEach(c => Console.WriteLine(c));
         }
     }
 }
