@@ -34,7 +34,7 @@ namespace ChinookDb.DataAccess
             using SqlConnection conn = new SqlConnection(GetConnectionString());
             conn.Open();
             using SqlCommand cmd = new SqlCommand(sql, conn);
-            var reader = cmd.ExecuteReader();
+            SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 customers.Add(new Customer(
@@ -58,7 +58,7 @@ namespace ChinookDb.DataAccess
             conn.Open();
             using SqlCommand cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@CustomerId", CustomerId);
-            var reader = cmd.ExecuteReader();
+            SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 customers.Add(new Customer(
@@ -82,7 +82,7 @@ namespace ChinookDb.DataAccess
             conn.Open();
             using SqlCommand cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@Name", "%" + name + "%");
-            var reader = cmd.ExecuteReader();
+            SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 customers.Add(new Customer(
@@ -107,7 +107,7 @@ namespace ChinookDb.DataAccess
             using SqlCommand cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@Offset", offset);
             cmd.Parameters.AddWithValue("@Limit", limit);
-            var reader = cmd.ExecuteReader();
+            SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 customers.Add(new Customer(
@@ -120,6 +120,26 @@ namespace ChinookDb.DataAccess
                     reader.GetString(6)));
             }
             return customers;
+        }
+
+        public bool AddNewCustomer(Customer customer)
+        {
+            string sql = "INSERT INTO Customer (FirstName, LastName, PostalCode, Country, Phone, Email)" +
+                "VALUES (@FirstName, @LastName, @PostalCode, @Country, @Phone, @Email)";
+            using SqlConnection conn = new SqlConnection(GetConnectionString());
+            conn.Open();
+            using SqlCommand cmd = new SqlCommand( sql, conn);
+            cmd.Parameters.AddWithValue("@FirstName", customer.FirstName);
+            cmd.Parameters.AddWithValue("@LastName", customer.LastName);
+            cmd.Parameters.AddWithValue("@PostalCode", customer.PostalCode);
+            cmd.Parameters.AddWithValue("@Country", customer.Country);
+            cmd.Parameters.AddWithValue("@Phone", customer.Phone);
+            cmd.Parameters.AddWithValue("@Email", customer.Email);
+
+            int result = cmd.ExecuteNonQuery();
+            
+            return result > 0;
+
         }
 
 
