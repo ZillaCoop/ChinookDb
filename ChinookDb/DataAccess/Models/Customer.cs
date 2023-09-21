@@ -8,8 +8,5 @@ using System.Threading.Tasks;
 
 namespace ChinookDb.DataAccess.Models
 {
-    internal readonly record struct Customer (int id, string FirstName, string LastName, string? PostalCode, string? Country, string? Phone, string Email)
-    {
-
-    }
+    internal readonly record struct Customer (int id, string FirstName, string LastName, string? PostalCode, string? Country, string? Phone, string Email);
 }

@@ -157,6 +157,27 @@ namespace ChinookDb.DataAccess
             return result > 0;
         }
 
+        public List<CustomerCountry> GetCustomerCountByCountries()
+        {
+            List<CustomerCountry> customerCountries = new List<CustomerCountry>();
+            string sql = "SELECT Country, Count(CustomerId) as CustomerCount FROM Customer " +
+                "GROUP BY Country ORDER BY CustomerCount DESC";
+            using SqlConnection conn = new SqlConnection(GetConnectionString());
+            conn.Open();
+            using SqlCommand cmd = new SqlCommand( sql, conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while(reader.Read())
+            {
+                customerCountries.Add(new CustomerCountry(
+                    reader.GetString(0),
+                    reader.GetInt32(1)
+                    ));
+            }
+
+            return customerCountries;
+        }
+
 
 
     }
