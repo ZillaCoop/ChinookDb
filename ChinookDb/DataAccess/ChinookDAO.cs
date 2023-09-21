@@ -38,12 +38,12 @@ namespace ChinookDb.DataAccess
             while (reader.Read())
             {
                 customers.Add(new Customer(
-                    reader.GetInt32(0), 
-                    reader.GetString(1), 
+                    reader.GetInt32(0),
+                    reader.GetString(1),
                     reader.GetString(2),
                     reader.IsDBNull(3) ? null : reader.GetString(3),
                     reader.IsDBNull(4) ? null : reader.GetString(4),
-                    reader.IsDBNull(5) ? null : reader.GetString(5), 
+                    reader.IsDBNull(5) ? null : reader.GetString(5),
                     reader.GetString(6)));
             }
             return customers;
@@ -128,7 +128,7 @@ namespace ChinookDb.DataAccess
                 "VALUES (@FirstName, @LastName, @PostalCode, @Country, @Phone, @Email)";
             using SqlConnection conn = new SqlConnection(GetConnectionString());
             conn.Open();
-            using SqlCommand cmd = new SqlCommand( sql, conn);
+            using SqlCommand cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@FirstName", customer.FirstName);
             cmd.Parameters.AddWithValue("@LastName", customer.LastName);
             cmd.Parameters.AddWithValue("@PostalCode", customer.PostalCode);
@@ -137,7 +137,7 @@ namespace ChinookDb.DataAccess
             cmd.Parameters.AddWithValue("@Email", customer.Email);
 
             int result = cmd.ExecuteNonQuery();
-            
+
             return result > 0;
 
         }
@@ -164,10 +164,10 @@ namespace ChinookDb.DataAccess
                 "GROUP BY Country ORDER BY CustomerCount DESC";
             using SqlConnection conn = new SqlConnection(GetConnectionString());
             conn.Open();
-            using SqlCommand cmd = new SqlCommand( sql, conn);
+            using SqlCommand cmd = new SqlCommand(sql, conn);
             SqlDataReader reader = cmd.ExecuteReader();
 
-            while(reader.Read())
+            while (reader.Read())
             {
                 customerCountries.Add(new CustomerCountry(
                     reader.GetString(0),
@@ -192,7 +192,7 @@ namespace ChinookDb.DataAccess
             using SqlCommand cmd = new SqlCommand(sql, conn);
             SqlDataReader reader = cmd.ExecuteReader();
 
-            while(reader.Read())
+            while (reader.Read())
             {
                 topCustomerSpenders.Add(new CustomerSpender(
                     reader.GetInt32(0),
@@ -205,6 +205,55 @@ namespace ChinookDb.DataAccess
             return topCustomerSpenders;
         }
 
+        public List<CustomerGenre> GetMostPopularGenreForCustomer(int customerId)
+        {
+            List<CustomerGenre> topGenres = new List<CustomerGenre>();
+            //To connect customer to genre, four joins were used to connect them by their foreign keys
+            string sql =
+                "SELECT C.CustomerId, G.Name as GenreName, COUNT(T.TrackId) as TrackCount " +
+                "FROM Customer C " +
+                "JOIN Invoice I ON C.CustomerId = I.CustomerId " +
+                "JOIN InvoiceLine IL ON I.InvoiceId = IL.InvoiceId " +
+                "JOIN Track T on T.TrackId = IL.TrackId " +
+                "JOIN Genre G on G.GenreId = T.GenreId " +
+                "WHERE C.CustomerId = @CustomerId " +
+                "GROUP BY C.CustomerId, G.Name " +
+                "ORDER BY TrackCount DESC";
+            using SqlConnection conn = new SqlConnection(GetConnectionString());
+            conn.Open();
+            using SqlCommand cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@CustomerId", customerId);
 
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            int highestTrackCount = -1; // default value that will be overridden by the first read 
+
+            
+            while (reader.Read())
+            {
+                int currentTrackCount = reader.GetInt32(2);
+
+                // If it's the first read or the track count matches the highest count, add to the list
+                if (highestTrackCount == -1 || currentTrackCount == highestTrackCount)
+                {
+                    topGenres.Add(new CustomerGenre(
+                        reader.GetInt32(0),
+                        reader.GetString(1),
+                        currentTrackCount
+                    ));
+
+                    if (highestTrackCount == -1)
+                    {
+                        highestTrackCount = currentTrackCount; // Set the highest track count from the first read
+                    }
+                }
+                else
+                {
+                    break; // If we've passed the top genre(s) with ties, exit the loop
+                }
+            }
+
+            return topGenres;
+        }
     }
 }

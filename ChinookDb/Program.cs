@@ -23,7 +23,9 @@ namespace ChinookDb
             //chinookDAO.ReadCustomersByName("Travolta").ForEach(c => Console.WriteLine(c));
 
             //chinookDAO.GetCustomerCountByCountries().ForEach(c => Console.WriteLine(c));
-            chinookDAO.GetTopCustomerSpenders().ForEach(c => Console.WriteLine(c));
+            //chinookDAO.GetTopCustomerSpenders().ForEach(c => Console.WriteLine(c));
+
+            chinookDAO.GetMostPopularGenreForCustomer(10).ForEach(c => Console.WriteLine(c));
 
         }
     }
