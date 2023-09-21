@@ -22,7 +22,9 @@ namespace ChinookDb
             //chinookDAO.UpdateAnExistingCustomersLastName(60, "Travolta IV", "Travolta III");
             //chinookDAO.ReadCustomersByName("Travolta").ForEach(c => Console.WriteLine(c));
 
-            chinookDAO.GetCustomerCountByCountries().ForEach(c => Console.WriteLine(c));
+            //chinookDAO.GetCustomerCountByCountries().ForEach(c => Console.WriteLine(c));
+            chinookDAO.GetTopCustomerSpenders().ForEach(c => Console.WriteLine(c));
+
         }
     }
 }

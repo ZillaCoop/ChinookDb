@@ -178,6 +178,32 @@ namespace ChinookDb.DataAccess
             return customerCountries;
         }
 
+        public List<CustomerSpender> GetTopCustomerSpenders()
+        {
+            List<CustomerSpender> topCustomerSpenders = new List<CustomerSpender>();
+            //Left join in case customer has not spent money
+            string sql = "SELECT C.CustomerId, C.FirstName, C.LastName, ISNULL(SUM(I.Total), 0) as TotalSpent " +
+                "FROM Customer C " +
+                "LEFT JOIN Invoice I ON C.CustomerId = I.CustomerId " +
+                "GROUP BY C.CustomerId, C.FirstName, C.LastName " +
+                "ORDER BY TotalSpent DESC";
+            using SqlConnection conn = new SqlConnection(GetConnectionString());
+            conn.Open();
+            using SqlCommand cmd = new SqlCommand(sql, conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while(reader.Read())
+            {
+                topCustomerSpenders.Add(new CustomerSpender(
+                    reader.GetInt32(0),
+                    reader.GetString(1),
+                    reader.GetString(2),
+                    reader.GetDecimal(3)
+                    ));
+            }
+
+            return topCustomerSpenders;
+        }
 
 
     }
