@@ -223,7 +223,7 @@ namespace ChinookDb.Repositories.Customers
         /// <returns>True if the the adding was successful, otherwise false.</returns>
         /// <exception cref="SqlException">Thrown when there's an issue executing the SQL query or connecting to the database.</exception>
         /// <exception cref="InvalidOperationException">Thrown when the SqlDataReader operation is invalid.</exception>
-        bool ICrudRepository<Customer, int>.Add(Customer obj)
+        public bool AddCustomer(Customer obj)
         {
             string sql = "INSERT INTO Customer (FirstName, LastName, PostalCode, Country, Phone, Email)" +
                 "VALUES (@FirstName, @LastName, @PostalCode, @Country, @Phone, @Email)";
@@ -252,7 +252,7 @@ namespace ChinookDb.Repositories.Customers
         /// <returns>A list of all customers.</returns>
         /// <exception cref="SqlException">Thrown when there's an issue executing the SQL query or connecting to the database.</exception>
         /// <exception cref="InvalidOperationException">Thrown when the SqlDataReader operation is invalid.</exception>
-        List<Customer> ICrudRepository<Customer, int>.GetAll()
+        public List<Customer> GetAllCustomers()
         {
             List<Customer> customers = new List<Customer>();
             string sql = "SELECT CustomerId, FirstName, LastName, PostalCode, Country, Phone, Email FROM Customer";
@@ -284,7 +284,7 @@ namespace ChinookDb.Repositories.Customers
         /// <returns>A list containing the customer, or an empty list if not found.</returns>
         /// <exception cref="SqlException">Thrown when there's an issue executing the SQL query or connecting to the database.</exception>
         /// <exception cref="InvalidOperationException">Thrown when the SqlDataReader operation is invalid.</exception>
-        List<Customer> ICrudRepository<Customer, int>.GetById(int CustomerId)
+        public List<Customer> ReadCustomerById(int CustomerId)
         {
             List<Customer> customers = new List<Customer>();
             string sql = "SELECT CustomerId, FirstName, LastName, PostalCode, Country, Phone, Email " +
@@ -317,7 +317,7 @@ namespace ChinookDb.Repositories.Customers
         /// <returns>A list of customers that match the search.</returns>
         /// <exception cref="SqlException">Thrown when there's an issue executing the SQL query or connecting to the database.</exception>
         /// <exception cref="InvalidOperationException">Thrown when the SqlDataReader operation is invalid.</exception>
-        List<Customer> ICustomerRepository.GetByName(string name)
+        public List<Customer> ReadCustomersByName(string name)
         {
             List<Customer> customers = new List<Customer>();
             string sql = "SELECT CustomerId, FirstName, LastName, PostalCode, Country, Phone, Email " +
@@ -358,7 +358,25 @@ namespace ChinookDb.Repositories.Customers
             throw new NotImplementedException();
         }
 
+        public List<Customer> GetByName(string name)
+        {
+            throw new NotImplementedException();
+        }
 
+        public List<Customer> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Customer> GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Add(Customer obj)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
