@@ -5,7 +5,7 @@ The database allows you to get information about all or certain customers, as we
 The repository also contains a folder called Apendix A that contains the required scripts to create a fully functioning database of superheroes. 
 
 # Required installations:
-You’ll need the latest version of Visual Studio to run this application.
+You’ll need the latest version of Visual Studio to run this application.  
 You'll also need the latest version of Microsoft SQL Server Management Studio.
 
 # Clone the Repository:
