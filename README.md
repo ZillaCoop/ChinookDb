@@ -1,4 +1,7 @@
 # ChinookDb
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/67/18_SQUADRON_MOUNTAIN_TRAINING_MOD_45166839.jpg" width="300" height="200">
+
 ChinookDb is a C# console application where you have access to a database much similar to iTunes, called Chinook.  
 The database allows you to get information about all or certain customers, as well as the ability to add, update and delete customers.
 
